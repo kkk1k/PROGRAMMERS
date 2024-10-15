@@ -1,22 +1,33 @@
 function solution(n, m) {
     var answer = [];
-    var big = n <= m ? n : m
-    var asd = 0 
-    for (i=big;i>=1; i--) {
-        if(n%i === 0 && m %i ===0) {
-            asd = i
-            break
+    var smallArr = []
+    if (n > m) {
+        var small = n
+        var big = m
+    } else {
+        var small = m
+        var big = n 
+    }
+    
+    for (i = 1; i <= small; i++){
+        if(small % i === 0) {
+            smallArr.push(i)
         }
     }
-    answer.push(asd)
-
-    for (i=big; i<=n*m; i++) {
-        if(i % n ===0 && i% m === 0 ) {
-            answer.push(i)
+    
+    for(i= smallArr.length; i>=0; i--) {
+        if(big % smallArr[i] === 0 ) {
+            answer.push(smallArr[i])
             break
         }
     }
     
+     for (i = big ; i<=m*n; i += smallArr[0] ) {
+         if (i % m ===0 && i % n === 0) {
+             answer.push(i)
+             break
+         }
+     }
     
     return answer;
 }
