@@ -1,20 +1,17 @@
 function solution(s) {
-    var answer = [...s];
-    var result = []
-    for (i= 0; i<s.length; i++) {
-        if (i===0) {
-            result.push(-1)
+    let result = []
+    let hash = {}
+    
+    for(i = 0; i<s.length ; i++) {
+        let char = s[i]
+        if(hash[char] !== undefined) {
+            result.push(i-hash[char])
+            
         } else {
-            for( j = i-1; j>=0; j-- ) {
-                if(answer[i] === answer[j] ) {
-                    result.push(i-j)
-                    break
-                } 
-                if (j === 0) {
-                    result.push(-1)
-                }
-            }
+            result.push(-1)
+            
         }
+        hash[char] = i
     }
-    return result;
+    return result
 }
