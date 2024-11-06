@@ -7,79 +7,12 @@ function solution(survey, choices) {
     
     survey.forEach((item,idx) => {
         let choice = choices[idx]
-        switch (item) {
-            case "RT":
-                if([1,2,3].includes(choice)){
-                    score["R"] += 4 - choice
-                    break
-                }
-                if([5,6,7].includes(choice)) {
-                    score["T"] += choice - 4
-                    break
-                }
-            case "TR":
-                if([1,2,3].includes(choice)){
-                    score["T"] += 4 - choice
-                    break
-                }
-                if([5,6,7].includes(choice)) {
-                    score["R"] += choice - 4
-                    break
-                }
-            case "FC":
-                if([1,2,3].includes(choice)){
-                    score["F"] += 4 - choice
-                    break
-                }
-                if([5,6,7].includes(choice)) {
-                    score["C"] += choice - 4
-                    break
-                }
-            case "CF":
-                if([1,2,3].includes(choice)){
-                    score["C"] += 4 - choice
-                    break
-                }
-                if([5,6,7].includes(choice)) {
-                    score["F"] += choice - 4
-                    break
-                }
-            case "MJ":
-                if([1,2,3].includes(choice)){
-                    score["M"] += 4 - choice
-                    break
-                }
-                if([5,6,7].includes(choice)) {
-                    score["J"] += choice - 4
-                    break
-                }
-            case "JM":
-                if([1,2,3].includes(choice)){
-                    score["J"] += 4 - choice
-                    break
-                }
-                if([5,6,7].includes(choice)) {
-                    score["M"] += choice - 4
-                    break
-                }
-            case "AN":
-                if([1,2,3].includes(choice)){
-                    score["A"] += 4 - choice
-                    break
-                }
-                if([5,6,7].includes(choice)) {
-                    score["N"] += choice - 4
-                    break
-                }
-            case "NA":
-                if([1,2,3].includes(choice)){
-                    score["N"] += 4 - choice
-                    break
-                }
-                if([5,6,7].includes(choice)) {
-                    score["A"] += choice - 4
-                    break
-                }
+        let abs = Math.abs(4-choices[idx])
+        if(choice > 4) {
+            score[item[1]] += abs
+        }
+        if(choice < 4) {
+            score[item[0]] += abs
         }
     })
     let final = Object.keys(score)
