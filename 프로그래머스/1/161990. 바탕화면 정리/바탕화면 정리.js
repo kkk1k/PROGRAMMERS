@@ -1,18 +1,40 @@
 function solution(wallpaper) {
-    let minRow = Infinity, minCol = Infinity;
-    let maxRow = -Infinity, maxCol = -Infinity;
-    
-    for (let i = 0; i < wallpaper.length; i++) {
-        for (let j = 0; j < wallpaper[i].length; j++) {
-            if (wallpaper[i][j] === '#') {
-                minRow = Math.min(minRow, i);
-                minCol = Math.min(minCol, j);
-                maxRow = Math.max(maxRow, i);
-                maxCol = Math.max(maxCol, j);
+    var answer = [];
+    let arr = []
+    for(let i =0; i < wallpaper.length; i++) {
+        for(let j=0; j<wallpaper[i].length; j++) {
+            if(wallpaper[i][j] === "#") {
+                arr.push([i,j])
+                
             }
         }
     }
     
-    // 드래그 시작점 (lux, luy)와 끝점 (rdx, rdy) 계산
-    return [minRow, minCol, maxRow + 1, maxCol + 1];
+    let x = 51;
+    let y = 51
+    for(let i = 0;i<arr.length;i++){
+        if (arr[i][0] < x) {
+            x= arr[i][0]
+        }
+        if(arr[i][1] < y) {
+            y=arr[i][1]
+        }
+    }
+    answer.push(x)
+    answer.push(y)
+    
+    
+    for(let i = 0;i<arr.length;i++){
+        if (arr[i][0] > x) {
+            x= arr[i][0] 
+        }
+        if(arr[i][1] > y) {
+            y=arr[i][1]
+        }
+    }
+    
+    answer.push(x +1 )
+    answer.push(y +1)
+    
+    return answer;
 }
