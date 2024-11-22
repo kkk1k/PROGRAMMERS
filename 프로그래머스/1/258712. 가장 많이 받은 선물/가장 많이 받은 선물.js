@@ -33,7 +33,5 @@ function solution(friends, gifts) {
         }
     }
     
-    return answer.reduce((a,b) => {
-        return a >= b ? a : b
-    },0);
+    return Math.max(...answer);
 }
