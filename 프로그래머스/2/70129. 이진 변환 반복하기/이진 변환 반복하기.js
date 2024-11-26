@@ -12,6 +12,9 @@ function solution(s) {
             }
         }
         let newArr = arr.filter(a=> a !== "0")
+        if(newArr === "1"){
+            break
+        }
         let len = newArr.length
         let str1 = []
         while(len > 0) {
