@@ -1,35 +1,43 @@
 const input = require("fs")
-  .readFileSync("/dev/stdin")
+  .readFileSync(process.platform === "linux" ? "/dev/stdin" : "./input.txt")
   .toString()
   .trim()
   .split("\n");
 
 class Queue {
   constructor() {
-    this.items = {};
+    this.item = {};
     this.headIndex = 0;
     this.tailIndex = 0;
   }
 
   enqueue(item) {
-    this.items[this.tailIndex] = item;
+    this.item[this.tailIndex] = item;
     this.tailIndex++;
   }
 
   dequeue() {
-    if (this.tailIndex === this.headIndex) return -1;
-    const item = this.items[this.headIndex];
-    delete this.items[this.headIndex];
+    const item = this.item[this.headIndex];
+    if (this.tailIndex === this.headIndex) {
+      return -1;
+    }
+    delete this.item[this.headIndex];
     this.headIndex++;
     return item;
   }
 
   peek() {
-    return this.tailIndex === this.headIndex ? -1 : this.items[this.headIndex];
+    const item = this.item[this.headIndex];
+    if (this.tailIndex === this.headIndex) {
+      return -1;
+    }
+    return item;
   }
 
   back() {
-    return this.tailIndex === this.headIndex ? -1 : this.items[this.tailIndex - 1];
+    return this.tailIndex === this.headIndex
+      ? -1
+      : this.item[this.tailIndex - 1];
   }
 
   getLength() {
@@ -37,7 +45,7 @@ class Queue {
   }
 
   isEmpty() {
-    return this.getLength() === 0 ? 1 : 0;
+    return this.tailIndex === this.headIndex ? 1 : 0;
   }
 }
 
@@ -45,21 +53,28 @@ const num = Number(input[0]);
 const queue = new Queue();
 const result = [];
 
-for (let i = 1; i <= num; i++) {
+for (let i = 1; i < 1 + num; i++) {
   const [command, value] = input[i].trim().split(" ");
 
-  if (command === "push") {
-    queue.enqueue(value);
-  } else if (command === "pop") {
-    result.push(queue.dequeue());
-  } else if (command === "size") {
-    result.push(queue.getLength());
-  } else if (command === "empty") {
-    result.push(queue.isEmpty());
-  } else if (command === "front") {
-    result.push(queue.peek());
-  } else if (command === "back") {
-    result.push(queue.back());
+  switch (command) {
+    case "push":
+      queue.enqueue(value);
+      break;
+    case "pop":
+      result.push(queue.dequeue());
+      break;
+    case "size":
+      result.push(queue.getLength());
+      break;
+    case "empty":
+      result.push(queue.isEmpty());
+      break;
+    case "front":
+      result.push(queue.peek());
+      break;
+    case "back":
+      result.push(queue.back());
+      break;
   }
 }
 
