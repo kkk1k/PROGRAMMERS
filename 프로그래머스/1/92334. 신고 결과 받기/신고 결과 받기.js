@@ -1,34 +1,36 @@
-function solution(id_list, report, k) {
-    var answer = Array(id_list.length).fill(0);
-    let newReport = [...new Set(report)]
-    let banId = {}
-    let punish = {} 
-    newReport.forEach((item)=>{
-        let [a,b] = item.split(" ")
-        if(banId[b] === undefined) {
-            banId[b] = 1   
-        } else {
-            banId[b] += 1
-        }
-        if (punish[a] === undefined) {
-            punish[a] = []; 
-        }
-        punish[a].push(b); 
+function solution (id_list, report, k) {
+    const obj_id = {}
+    const obj_num = {}
+    let answer = []
+    let newReport =  [...new Set(report)]
+    id_list.forEach(item => {
+        obj_id[item] = new Set()
     })
     
-    Object.keys(banId).forEach(item => {
-        if(banId[item] < k) {
-            delete banId[item]
-        }
-    })
+    newReport.forEach(item => {
+        let [ing, ed] = item.split(" ");
+        obj_id[ing].add(ed); // Set에 추가
+        obj_num[ed] = (obj_num[ed] || 0) + 1;  
+    });
     
-    id_list.forEach((item, idx)=> {
-       Object.keys(banId).forEach(ban => {
-        if(punish[item] && punish[item].includes(ban)) {
-            answer[idx] += 1
+    let arr = []
+    for (let key in obj_num) {
+        if( obj_num[key] >= k) {
+            arr.push(key)
         }
-    })
-    })
+    }
     
-    return answer;
+    for(let key in obj_id) {
+        let num = 0
+        for(let target of obj_id[key]) {
+            if(arr.includes(target)) {
+                num+=1
+            }
+        }
+        answer.push(num)
+    }
+    
+    return answer
+    
 }
+
