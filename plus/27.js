@@ -21,7 +21,7 @@ class BST {
           if (curr.left) {
             curr = curr.left;
           } else {
-            curr = curr.right;
+            curr.left = new Node(key);
             break;
           }
         } else {
@@ -62,4 +62,7 @@ function solution(list, searchList) {
       result.push(false);
     }
   }
+  return result;
 }
+
+console.log(solution([12, 3, 5, 6, 7, 1], [2, 4, 3]));
