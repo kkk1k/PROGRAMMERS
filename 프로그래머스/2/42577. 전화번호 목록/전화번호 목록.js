@@ -1,13 +1,15 @@
 function solution(phone_book) {
     var answer = true;
     phone_book.sort()
-    const len = phone_book.length
-    for(let idx = 0; idx< len-1; idx++) {
-        let item = phone_book[idx]
-        if(phone_book[idx+1].slice(0,item.length) === item) {
-            answer = false
+    let small = phone_book[0]
+    for(let i = 1; i<phone_book.length; i++) {
+        let len = small.length
+        if(small === phone_book[i].slice(0,len)) {
+            answer = false 
             break
         }
+        small = phone_book[i]
+        
     }
-    return answer ;
+    return answer;
 }
