@@ -1,40 +1,35 @@
 function solution(maps) {
-    
-    let pos = [0,0]
-    let visited = Array.from({ length: maps.length }, () =>
-        Array(maps[0].length).fill(false)
-    );
-    
-    function bfs(x, y) {
-        let queue  = [];
-        visited[x][y] = true;
-        queue.push([x, y, 1]);
-        while (queue.length !== 0) {
-            let [curX, curY,dist] = queue.shift();
-            if(curX === maps.length-1 && curY===maps[0].length-1) {
-                return dist
+    var answer = 0;
+    const n = maps.length
+    const m = maps[0].length 
+    const dx = [1,-1, 0, 0]
+    const dy = [0,0,1,-1]
+    const visited = Array.from({length: n}, () => Array(m).fill(false))
+    function bfs() {
+        let loc = [0,0,1]
+        let queue = []
+        visited[0][0] = true
+        queue.push(loc)
+        while(queue.length > 0) {
+            let [x,y,d] =queue.shift()
+            if(x === n-1 && y === m-1) {
+                return d
             }
-            
-            //상하좌우
-            let dx = [-1, 1, 0, 0] 
-            let dy = [0, 0, -1, 1]
-            for(let i = 0 ; i< dx.length; i++) {
-                let a = curX + dx[i]
-                let b = curY + dy[i]
-                if(a >=  0 && a < maps.length  && b >=0 && b < maps[0].length && maps[a][b] === 1 && !visited[a][b]) {
-                    visited[a][b] = true
-                    queue.push([a,b,dist+1])
-                    
+            for (let i = 0; i<dx.length; i++) {
+                let nextX = x + dx[i]
+                let nextY = y + dy[i]
+                if(nextX >= 0 && nextX < n && nextY >= 0 && nextY < m && 
+                   !visited[nextX][nextY] && 
+                   maps[nextX][nextY] !== 0) {
+                    visited[nextX][nextY] = true
+                    queue.push([nextX,nextY,d +1])
                 }
-                
             }
-            
         }
         return -1
     }
-    
-    
-    return bfs(0,0)
-        
-    
+    return bfs()
+
 }
+
+
