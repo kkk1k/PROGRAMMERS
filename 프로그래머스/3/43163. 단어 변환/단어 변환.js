@@ -1,64 +1,37 @@
 function solution(begin, target, words) {
-  if (!words.includes(target)) {
+    var answer = 0;
+    const visited = new Set()
+    if (!words.includes(target)) {
     return 0;
-  }
-
-  const graph = {};
-  const visited = {};
-  const len = begin.length;
-
-  for (let item of words) {
-    graph[item] = [];
-    visited[item] = false;
-    for (let ano of words) {
-      let similiar = 0;
-      if (item === ano) continue;
-      for (let i = 0; i < len; i++) {
-        if (item[i] === ano[i]) {
-          similiar += 1;
+    }
+    const isDiff = (w1, w2) => {
+        let diff = 0
+        for (let i = 0 ; i<w1.length; i++) {
+            if(w1[i] !== w2[i]) {
+                diff +=1
+            }
+            if(diff > 1) {
+                return false
+            }
         }
-      }
-      if (similiar === len - 1) {
-        graph[item].push(ano);
-      }
+        return diff === 1
     }
-  }
-  graph[begin] = [];
-  visited[begin] = false;
-  for (let word of words) {
-    let similar = 0;
-    for (let i = 0; i < len; i++) {
-      if (begin[i] === word[i]) {
-        similar += 1;
-      }
-    }
-    if (similar === len - 1) {
-      graph[begin].push(word);
-    }
-  }
+    
+    const queue = [[begin, 0]]
+    visited.add(begin)
+    while(queue.length > 0) {
+        const [word, d] = queue.shift()
 
-  function bfs(start) {
-    let answer = 0;
-    const queue = [[start, answer]];
-    visited[start] = true;
-
-    while (queue.length > 0) {
-      const [item, d] = queue.shift();
-      if (item === target) {
-        return d;
-        break;
-      }
-      for (let i of graph[item]) {
-        if (!visited[i]) {
-          visited[i] = true;
-          queue.push([i,d+1]);
+        if(word === target) {
+            return d
         }
-      }
-      
-    }
-        return 0
-  }
-
-  let ans = bfs(begin);
-  return ans;
+        for (let nextWord of words) {
+            if(isDiff(word,nextWord) && !visited.has(nextWord)) {
+                visited.add(nextWord)
+                queue.push([nextWord,d+1])
+            }
+        }
+     }
+    
+    return 0;
 }
