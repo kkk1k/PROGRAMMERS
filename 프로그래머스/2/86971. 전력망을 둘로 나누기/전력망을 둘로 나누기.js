@@ -1,36 +1,45 @@
+function find(x,parents) {
+    if (parents[x] === x) return x
+    
+    parents[x] = find(parents[x], parents)
+    return parents[x]
+}
+
+function union(x,y, parents) {
+    const rootX = find(x, parents)
+    const rootY = find(y, parents)
+    if(rootX !== rootY) {
+        parents[rootY] = rootX
+    }
+}
+
 function solution(n, wires) {
     var answer = [];
-    const graph = Array.from({length : n+1}, ()=> [])
-    for (let i of wires) {
-        const [u,v] = i
-        graph[u].push(v)
-        graph[v].push(u)
-    }
     
-    function dfs (node, parent) {
-        // 연결된 개수를 찾는 것
-        let cnt =1 
-        for(const i of graph[node]) {
-            if(i !== parent) {
-                cnt += dfs(i,node)
-            }
+    function check (arr) {
+
+        const obj = {}
+        for (let i = 1; i<arr.length; i++) {
+            arr[i] = find(i,arr)
+            obj[arr[i]] = (obj[arr[i]] || 0) + 1
         }
-        return cnt
+        
+        let sizes = Object.values(obj);
+        if (sizes.length === 2) {
+            var diff = Math.abs(sizes[0] - sizes[1]);
+        }
+        answer.push(diff)
     }
     
-    for ([a,b] of  wires) {
-        graph[a].splice(graph[a].indexOf(b), 1)
-        graph[b].splice(graph[b].indexOf(a), 1)
+    for(let i = 0; i < wires.length; i++) {
+        const parents = Array.from({length : n +1}, (_,idx) => idx)
         
-        const section1 = dfs(a,b)
-        const section2 = n- section1
-        answer.push(Math.abs(section1- section2))
-        
-        graph[a].push(b)
-        graph[b].push(a)
-        
-        
+        for(let j = 0; j<wires.length ; j++) {
+            if(i === j) continue
+            let [a,b] = wires[j]
+            union(a,b,parents)
+        }
+        check(parents)
     }
-    answer.sort((a,b)=> a-b)
-    return answer[0];
+    return answer.sort((a,b)=> a-b)[0];
 }
