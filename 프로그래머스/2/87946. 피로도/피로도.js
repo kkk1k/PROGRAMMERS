@@ -1,16 +1,17 @@
 function solution(k, dungeons) {
     var answer = 0;
-    let visited = Array(dungeons.length).fill(false)
-    function dfs(hp,L) {
-        for(let i = 0; i<dungeons.length; i++){
-            if(hp>=dungeons[i][0] && !visited[i]) {
+    const num = dungeons.length
+    const visited = Array(num).fill(false)
+    const dfs = (potion, count) => {
+        
+        for (let i = 0; i < num ; i++) {
+            if(!visited[i] && potion >= dungeons[i][0]) {
                 visited[i] = true
-                dfs(hp-dungeons[i][1],L+1)
+                dfs(potion - dungeons[i][1], count + 1)
                 visited[i] = false
             }
         }
-        
-        answer = Math.max(answer,L)
+        answer = Math.max(count,answer)
     }
     
     dfs(k,0)
